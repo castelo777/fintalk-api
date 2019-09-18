@@ -4,6 +4,8 @@ module.exports = (app) => {
 
     return {
         list : async  (request, response) => {
+            const query = request.query;
+
             const data = await model.find()
 
             if(data)return response.status(200).json({status: 200, data})
@@ -11,8 +13,6 @@ module.exports = (app) => {
         },
         findById:  async   ( request, response ) => {
             const _id = request.params.id;
-
-            console.log(_id)
             const data = await model.findById(_id)
 
             if(data)return response.status(200).json({status: 200, data})

@@ -21,18 +21,16 @@ module.exports = app => {
                         const payload = { id: user._id, name: user.name };
                         jwt.sign(payload, credentials.secret, { expiresIn: 1800 }, async (err, token) => {
                             if (err) return response.status(500).json({ error: "Error signing token", raw: err }); 
-
-                            await model.findByIdAndUpdate({_id: user._id}, {token, last_login: new Date})
+                            await model.update({_id: user._id}, {token, last_login: new Date}, {$upsert: true})    
 
                             return response.json({  success: true, token: `Bearer ${token}` });
                         });      
                     } else {
-                        return response.status(404).json({status: 404, message: "E-mail/Password are inválid"});
+                        return response.status(401).json({status: 401, message: "E-mail/Password are inválid"});
                     }
                 });
 
             } catch (error) {
-                console.log(error)
                 return response.status(500).json({ status: 500, message: error })
             }
         },
@@ -41,7 +39,7 @@ module.exports = app => {
 
             const user = await model.findOne({email: body.email})
 
-            if(user)return response.status(400).json({status: 400, message: 'Email Address Exists in Database.'})
+            if(user)return response.status(500).json({status: 500, message: 'Email Address Exists in Database.'})
 
             let data = await model.create(body)
 
