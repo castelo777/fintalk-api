@@ -1,6 +1,6 @@
 
 require('dotenv').config({ path: './.env' })
-require("./config/database")()
+//require("./config/database")()
 
 const http = require("http")
 const app = require("./config");

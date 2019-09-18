@@ -27,6 +27,13 @@ module.exports = app => {
                     })
                 }
             })
+        },
+        create: async (request, response) => {
+            const body = request.body
+            let data = await model.create(body)
+
+            if(data)return response.status(200).json({status: 200, data})
+            else return response.status(500).json({status: 500, message: 'Error on creteOrUpdate user.'})
         }
     }
 }

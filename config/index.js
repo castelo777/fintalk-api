@@ -3,6 +3,8 @@ const bodyParser = require("body-parser")
 const load = require("consign")
 const passport = require("passport")
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 require("./passport")()
 
@@ -10,6 +12,7 @@ app.use(passport.initialize())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(require("method-override")())
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
 
 
 load({cwd: 'app'})

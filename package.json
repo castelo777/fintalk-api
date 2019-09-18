@@ -18,6 +18,7 @@
     "mongoose-guid": "^1.0.31",
     "nodemon": "^1.19.2",
     "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "swagger-ui-express": "^4.1.1"
   }
 }
