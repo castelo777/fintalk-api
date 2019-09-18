@@ -1,14 +1,15 @@
+const checkAuth = require("../../config/checkAuht")
 module.exports = app => {
     const controller = app.controllers.user
 
         
     app.route('/user')
-        .get(controller.list)
-        .post(controller.createOrUpdate)
-        .put(controller.createOrUpdate)
+        .get(checkAuth, controller.list)
+        .post(checkAuth, controller.createOrUpdate)
+        .put(checkAuth, controller.createOrUpdate)
     
     app.route('/user/:id')
-        .get(controller.findById)
-        .delete(controller.destroy)
+        .get(checkAuth, controller.findById)
+        .delete(checkAuth, controller.destroy)
 
 }

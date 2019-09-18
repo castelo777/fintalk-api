@@ -6,7 +6,7 @@ const app = express();
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
-require("./passport")()
+require("./database")()
 
 app.use(passport.initialize())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -26,6 +26,9 @@ app.get("*", (request, response) => {
         message: "Endpoint don't exists"
     })
 })
+
+
+require("./passport")(passport)
 
 module.exports = app;
 

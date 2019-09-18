@@ -1,6 +1,7 @@
 const passport = require("passport")
 const jwt = require("jsonwebtoken")
 const credentials = require("../../config/credentials")
+const bcrypt = require("bcrypt")
 
 module.exports = app => {
 
@@ -8,28 +9,40 @@ module.exports = app => {
 
     return {
         login: async (request, response) => {
-            passport.authenticate('login', (err, user, info) => {
-                if(err) return console.log(err)
+            const { email, password } = request.body;
+           
+            try {
+                const user = await model.findOne({ email })
 
-                if(info){
-                    console.log(info.message)
-                    response.status(200).json({status: 200, message: info.message})
-                }else{
-                    request.logIn(user, async err => {
-                        const userFind = await model.findOne({email: user.email})
-                        const token = jwt.sign({id: userFind.email}, credentials.secret)
+                if (!user) return response.status(404).json({status: 404, message: "E-mail/Password are inválid"});
 
-                        response.status(200).json({
-                            auth: true,
-                            token,
-                            message: `Session logged.`
-                        })
-                    })
-                }
-            })
+                bcrypt.compare(password, user.password).then(isMatch => {
+                    if (isMatch) {
+                        const payload = { id: user._id, name: user.name };
+                        jwt.sign(payload, credentials.secret, { expiresIn: 1800 }, async (err, token) => {
+                            if (err) return response.status(500).json({ error: "Error signing token", raw: err }); 
+
+                            await model.findByIdAndUpdate({_id: user._id}, {token, last_login: new Date})
+
+                            return response.json({  success: true, token: `Bearer ${token}` });
+                        });      
+                    } else {
+                        return response.status(404).json({status: 404, message: "E-mail/Password are inválid"});
+                    }
+                });
+
+            } catch (error) {
+                console.log(error)
+                return response.status(500).json({ status: 500, message: error })
+            }
         },
-        create: async (request, response) => {
+        register: async (request, response) => {
             const body = request.body
+
+            const user = await model.findOne({email: body.email})
+
+            if(user)return response.status(400).json({status: 400, message: 'Email Address Exists in Database.'})
+
             let data = await model.create(body)
 
             if(data)return response.status(200).json({status: 200, data})
