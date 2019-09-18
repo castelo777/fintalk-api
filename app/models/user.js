@@ -25,10 +25,10 @@ module.exports = () => {
         phones: [
             {
                 number: {
-
+                    type: String
                 },
                 code: {
-
+                    type: String
                 }
             }
         ],
@@ -50,9 +50,17 @@ module.exports = () => {
     schema.set('toObject', {getters: true})
     schema.set('toJSON', {getters: true})
 
-    schema.pre('save', (next) => {
-        if(this.password) 
+    schema.pre('save', function(next){
+        if(!this.isModified("password")) return next()
+
+        this.password = bcrypt.hashSync(this.password, 10)
+        next()
     })
+
+    schema.methods.comparerPassword = function(value, callback){
+
+        return callback(null, bcrypt.compareSync(value, this.password))
+    }
 
     return mongoose.model('User', schema)
 }

@@ -1,18 +1,21 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const load = require("consign")
-
+const passport = require("passport")
 const app = express();
 
+require("./passport")()
+
+app.use(passport.initialize())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(require("method-override")())
 
-load({cwd: '../app', extensions: ['.js', '.json']})
-    .include('routes')    
-    .then('models')
-    .then('services')
+
+load({cwd: 'app'})
+    .include('models')    
     .then('controllers')
+    .then('routes')
     .into(app)
 
 app.get("*", (request, response) => {
