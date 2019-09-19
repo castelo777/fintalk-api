@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+mongoose.Promise = require("bluebird")
 
 module.exports = () => {
     mongoose.connect(process.env.APP_DATABASE, { useMongoClient:true })

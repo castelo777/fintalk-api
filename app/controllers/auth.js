@@ -35,16 +35,20 @@ module.exports = app => {
             }
         },
         register: async (request, response) => {
-            const body = request.body
+           try {
+                const body = request.body
 
-            const user = await model.findOne({email: body.email})
+                const user = await model.findOne({email: body.email})
 
-            if(user)return response.status(500).json({status: 500, message: 'Email Address Exists in Database.'})
+                if(user)return response.status(500).json({status: 500, message: 'Email Address Exists in Database.'})
 
-            let data = await model.create(body)
+                let data = await model.create(body)
 
-            if(data)return response.status(200).json({status: 200, data})
-            else return response.status(500).json({status: 500, message: 'Error on creteOrUpdate user.'})
+                if(data)return response.status(200).json({status: 200, data})
+                else return response.status(500).json({status: 500, message: 'Error on creteOrUpdate user.'})
+            } catch (error) {
+                return response.status(500).json({ status: 500, message: error })
+           }
         }
     }
 }
