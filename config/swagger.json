@@ -4,7 +4,7 @@
         "description":"This api it's a simple auth and list users",
         "version":"1.0",
         "title":"FINTALK - API",
-        "termsOfService":"http://swagger.io/terms/",
+        "termsOfService": "https://fintalk-api.herokuapp.com/",
         "contact":{
             "email":"josecastelo02@gmail.com"
         }
