@@ -2,6 +2,9 @@
   "name": "fintalk-api",
   "version": "1.0.0",
   "start": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "repository": "git@github.com:castelo777/fintalk-api.git",
   "author": "Jose Castelo <josecastelo02@gmail.com>",
   "license": "MIT",
