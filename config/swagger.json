@@ -9,7 +9,7 @@
             "email":"josecastelo02@gmail.com"
         }
     },
-    "host":"localhost:3000",
+    "host":"fintalk-api.herokuapp.com/",
     "basePath":"/",
     "tags":[
       {
@@ -18,7 +18,7 @@
       }
     ],
     "schemes":[
-      "http"
+      "https"
     ],
     "consumes":[
       "application/json"
