@@ -9,7 +9,7 @@
             "email":"josecastelo02@gmail.com"
         }
     },
-    "host":"fintalk-api.herokuapp.com/",
+    "host":"fintalk-api.herokuapp.com",
     "basePath":"/",
     "tags":[
       {
